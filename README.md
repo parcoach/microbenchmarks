@@ -20,6 +20,7 @@ Collective mismatch: Processes with an even rank call the collective sequence **
 Structure with a multi-valued field: field `mype` of structure `H` is multi-valued whereas field `nproc` is single-valued and the barrier line `15` is conditionally called depending on the value of `H->nproc`.
 
 - **index-dep.c**
+
 Use of an array: The barrier line `15` is conditionally called depending on the value of `A[r]` which is multi-valued as `r` is the process rank and each element of array `A` is assigned a different value line `12`.
 
 - **loop_barrier.c**
@@ -28,9 +29,7 @@ Barriers called in a loop. Processes with an odd rank will call `9` barriers whe
 
 - **mismatch_barrier.c**
 
-- Collective mismatch:
-
-Only processes with an odd rank will call the barrier line `20`.
+Collective mismatch: Only processes with an odd rank will call the barrier line `20`.
 
 - **mismatch_barrier_com.c**
 
