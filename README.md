@@ -4,34 +4,65 @@ This microbenchmark suite contains multiple MPI test case with collective issues
 ## Tests Description
 
 - **CIVL_barrierReduce.c**
+
 Collective mismatch: Processes with an even rank call the collective sequence  **{MPI_Barrier, MPI_Reduce}** whereas processes with an odd rank call the collective sequence **{MPI_Reduce, MPI_Barrier}**.
+
 - **CIVL_barrierScatter.c**
+
 Collective mismatch: Root process call the collective sequence **{MPI_Scatter,MPI_Barrier}** whereas other processes call the collective sequence **{MPI_Barrier, MPI_Scatter}**.
+
 - **CIVL_BcastReduce_bad.c**
+
 Collective mismatch: Processes with an even rank call the collective sequence **{MPI_Bcast, MPI_Reduce, MPI_Bcast}** whereas processes with an odd rank call the collective sequence **{MPI_Bcast, MPI_Bcast, MPI_Reduce}**.
+
 - **field-sensitive.c**
+
 Structure with a multi-valued field: field `mype` of structure `H` is multi-valued whereas field `nproc` is single-valued and the barrier line `15` is conditionally called depending on the value of `H->nproc`.
+
 - **index-dep.c**
 Use of an array: The barrier line `15` is conditionally called depending on the value of `A[r]` which is multi-valued as `r` is the process rank and each element of array `A` is assigned a different value line `12`.
+
 - **loop_barrier.c**
+
 Barriers called in a loop. Processes with an odd rank will call `9` barriers whereas others will call `10` barriers.
+
 - **mismatch_barrier.c**
-- Collective mismatch: Only processes with an odd rank will call the barrier line `20`.
+
+- Collective mismatch:
+
+Only processes with an odd rank will call the barrier line `20`.
+
 - **mismatch_barrier_com.c**
+
 MPI communicator mismatch.
+
 - **mismatch_barrier_nb.c**
+
 Collective mismatch: Processes with an odd rank execute a blocking barrier whereas other processes execute a non-blocking barrier.
+
 - **MPIexample.c**
+
 Variable `n` is assigned different values depending on the process rank and becomes multi-valued line `26`. Hence, the collective line `12` is not called by all processes because of the conditional line `26`.
+
 - **noerror_barrier.c**
+
 Correct usage of barrier.
+
 - **not_verifiable.c**
+
 Correct, but structurally incorrect code. Processes with an odd rank call the barrier line `20` whereas processes with an even rank call the barrier line `23`.
+
 - **phi-cond.c**
+
 Control-flow dependence: The value of variable `v` becomes multi-valued line `24`, thus the barrier line `25` is not called by all processes.
+
 - **pointer-alias.c**
-Use of aliases: Pointer `b` points to variable `a` and `a` becomes multi-valued line `13` because of the call to `MPI_Comm_rank` taking as parameter pointer `b`. Hence, the barrier line `16` is not called by all processes.
+
+Use of aliases: Pointer `b` points to variable `a` and `a` becomes multi-valued line `13` because of the call to `MPI_Comm_rank` taking as parameter pointer `b`. Hence, the barrier line `16` is not called by
+all processes.
+
 - **pointer-instance.c**
+
 Variable `s` becomes multi-valued line `19`, hence the barrier line `22` is not called by all processes.
 
 ## Collective error detection comparison between the work in [1] and PARCOACH using our PDCG, SVF and Parfait
