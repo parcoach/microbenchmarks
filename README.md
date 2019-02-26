@@ -84,3 +84,5 @@ Variable `s` becomes multi-valued line `19`, hence the barrier line `22` is not 
 | noerror_barrier.c | OK | OK | OK | OK
 | not_verifiable.c | False Positive | False Positive | False Positive | False Positive | Structurally incorrect program. All methods emit false positive warnings for the barriers lines `20` and `23`.
 | loop_barrier.c | OK | OK | OK | OK
+
+**[1] Zhang, Y., Duesterwald, E.: Barrier matching for programs with textually unaligned barriers. PPoPP, ACM (2007) 194–204**
