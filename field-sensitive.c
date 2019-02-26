@@ -8,8 +8,8 @@ typedef struct _hydroparam {
 
 
 void f(hydroparam_t *H){
- MPI_Comm_size(MPI_COMM_WORLD,&H->mype);
- MPI_Comm_rank(MPI_COMM_WORLD,&H->nproc);
+ MPI_Comm_rank(MPI_COMM_WORLD,&H->mype);
+ MPI_Comm_size(MPI_COMM_WORLD,&H->nproc);
 
  if(H->nproc > 1)
 	MPI_Barrier(MPI_COMM_WORLD);
