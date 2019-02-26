@@ -67,8 +67,8 @@ Variable `s` becomes multi-valued line `19`, hence the barrier line `22` is not 
 ## Collective error detection comparison between the work in [1] and PARCOACH using our PDCG, SVF and Parfait
 
 
-| Program Name | Origin Deadlock | Zhang et. al [1] | PARCOACH PDCG | PARCOACH SVF | PARCOACH PARFAIT | COMMENT |
-| ------------ | --------------- | ---------------- | ------------- | ------------ | ---------------- | ------- |
+| Program Name | Origin | Deadlock | Zhang et. al [1] | PARCOACH PDCG | PARCOACH SVF | PARCOACH PARFAIT | COMMENT |
+| ------------ | ------ | -------- | ---------------- | ------------- | ------------ | ---------------- | ------- |
 | field-sensitive.c | PARCOACH  | no | False Positive | False Positive | False Positive | False Positive | None of the methods resort to a field-sensitive alias analysis, hence `H->nproc` is tagged as multi-valued because of the statement line `12` and all methods emit a warning for the barrier line `15`.
 | index-dep.c | PARCOACH  | yes | OK | OK | False Negative | OK | SVF does not consider the dependency with the array index, hence `A[r]` is tagged as single-valued and no warning is emitted for the barrier line `15`.
 | phi-cond.c | PAROCACH  | yes | OK | OK | False Negative | OK | SVF does not consider control dependencies. Hence it tags the instance of the variable `v` line `24` as single-valued and does not emit a warning for the barrier line `25`.
