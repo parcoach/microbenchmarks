@@ -67,20 +67,20 @@ Variable `s` becomes multi-valued line `19`, hence the barrier line `22` is not 
 ## Collective error detection comparison between the work in [1] and PARCOACH using our PDCG, SVF and Parfait
 
 
-| Program Name | Origin | Deadlock | Zhang et. al [1] | PARCOACH PDCG | PARCOACH SVF | PARCOACH PARFAIT | COMMENT |
-| ------------ | ------ | -------- | ---------------- | ------------- | ------------ | ---------------- | ------- |
-| field-sensitive.c | PARCOACH  | no | False Positive | False Positive | False Positive | False Positive | None of the methods resort to a field-sensitive alias analysis, hence `H->nproc` is tagged as multi-valued because of the statement line `12` and all methods emit a warning for the barrier line `15`.
-| index-dep.c | PARCOACH  | yes | OK | OK | False Negative | OK | SVF does not consider the dependency with the array index, hence `A[r]` is tagged as single-valued and no warning is emitted for the barrier line `15`.
-| phi-cond.c | PAROCACH  | yes | OK | OK | False Negative | OK | SVF does not consider control dependencies. Hence it tags the instance of the variable `v` line `24` as single-valued and does not emit a warning for the barrier line `25`.
-| pointer-instance.c | PARCOACH | yes | OK | OK | OK | False Positive | In LLVM IR `s` is an address-taken variable read and written with store and load operations on the top-level pointer `%s`. However, Parfait does not differentiate the multiple values of address-taken variables after each store instruction. Hence, Parfait tags the instance of `s` at line `18` as multi-valued because of the statement line `19` and emits a false positive warning for the barrier line `6`.
-| pointer-alias.c | PARCOACH | yes | False Negative | OK | OK | False Positive | As [1] does not handle pointer aliases, it tags the instance of `a` line `15` as single-valued and does not emit a warning for the barrier line `16`. As Parfait does not differentiate the values of address-taken variables after each store instruction, it tags the instance of `a` line `10` as multi-valued because of the statement line `13` and emits a false positive warning for the barrier line `11`.
-| CIVL_barrierReduce.c | CIVL  | yes | False Negative | OK | OK | OK | [1] does not support any other collective than MPI_Barrier and does not emit any warning.
-| CIVL_barrierScatter.c | CIVL  | yes | False Negative | OK | OK | OK | [1] does not support any other collective than MPI_Barrier and does not emit any warning.
-| CIVL_BcastReduce_bad.c | CIVL  | yes | False Negative | OK | OK | OK | [1] does not support any other collective than MPI_Barrier and does not emit any warning.
-| mismatch-barrier.c | PARCOACH  | yes | OK | OK | OK | OK
-| mismatch_barrier_com.c | PARCOACH  | yes | OK | OK | OK | OK
-| mismatch_barrier_nb.c | PARCOACH  | yes | OK | OK | OK | OK
-| MPIexample.c | PARCOACH | yes | False Negative | OK | False Negative | False Negative | [1] does not support any other collective than MPI_Barrier, SVF does not consider control-flow dependencies and Parfait does not handle control-flow dependencies for address-taken variables.
-| noerror_barrier.c | PARCOACH  | yes | OK | OK | OK | OK
-| not_verifiable.c | PARCOACH | yes | False Positive | False Positive | False Positive | False Positive | Structurally incorrect program. All methods emit false positive warnings for the barriers lines `20` and `23`.
-| loop_barrier.c | PARCOACH  | yes | OK | OK | OK | OK
+| Program Name | Zhang et. al [1] | PARCOACH PDCG | PARCOACH SVF | PARCOACH PARFAIT | COMMENT |
+| ------------ | ---------------- | ------------- | ------------ | ---------------- | ------- |
+| field-sensitive.c | False Positive | False Positive | False Positive | False Positive | None of the methods resort to a field-sensitive alias analysis, hence `H->nproc` is tagged as multi-valued because of the statement line `12` and all methods emit a warning for the barrier line `15`.
+| index-dep.c  | OK | OK | False Negative | OK | SVF does not consider the dependency with the array index, hence `A[r]` is tagged as single-valued and no warning is emitted for the barrier line `15`.
+| phi-cond.c | OK | OK | False Negative | OK | SVF does not consider control dependencies. Hence it tags the instance of the variable `v` line `24` as single-valued and does not emit a warning for the barrier line `25`.
+| pointer-instance.c | OK | OK | OK | False Positive | In LLVM IR `s` is an address-taken variable read and written with store and load operations on the top-level pointer `%s`. However, Parfait does not differentiate the multiple values of address-taken variables after each store instruction. Hence, Parfait tags the instance of `s` at line `18` as multi-valued because of the statement line `19` and emits a false positive warning for the barrier line `6`.
+| pointer-alias.c | False Negative | OK | OK | False Positive | As [1] does not handle pointer aliases, it tags the instance of `a` line `15` as single-valued and does not emit a warning for the barrier line `16`. As Parfait does not differentiate the values of address-taken variables after each store instruction, it tags the instance of `a` line `10` as multi-valued because of the statement line `13` and emits a false positive warning for the barrier line `11`.
+| CIVL_barrierReduce.c | False Negative | OK | OK | OK | [1] does not support any other collective than MPI_Barrier and does not emit any warning.
+| CIVL_barrierScatter.c | False Negative | OK | OK | OK | [1] does not support any other collective than MPI_Barrier and does not emit any warning.
+| CIVL_BcastReduce_bad.c |  False Negative | OK | OK | OK | [1] does not support any other collective than MPI_Barrier and does not emit any warning.
+| mismatch-barrier.c | OK | OK | OK | OK
+| mismatch_barrier_com.c  | OK | OK | OK | OK
+| mismatch_barrier_nb.c  | OK | OK | OK | OK
+| MPIexample.c | False Negative | OK | False Negative | False Negative | [1] does not support any other collective than MPI_Barrier, SVF does not consider control-flow dependencies and Parfait does not handle control-flow dependencies for address-taken variables.
+| noerror_barrier.c | OK | OK | OK | OK
+| not_verifiable.c | False Positive | False Positive | False Positive | False Positive | Structurally incorrect program. All methods emit false positive warnings for the barriers lines `20` and `23`.
+| loop_barrier.c | OK | OK | OK | OK
